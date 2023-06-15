@@ -1,5 +1,5 @@
 import cv2
-
+import os
 # Lista para armazenar as bounding boxes
 bounding_boxes = []
 
@@ -14,7 +14,7 @@ def draw_bounding_box(event, x, y, flags, param):
         cv2.imshow('Image', image)
 
 # Carregar a imagem
-image = cv2.imread('ocupadas_set1_30m_2.jpg')
+image = cv2.imread('vazias_set2_70m_1.jpg')
 
 # Criar a janela e definir o callback do mouse
 cv2.namedWindow('Image')
@@ -30,10 +30,14 @@ while True:
         break
 
 # Salvar as imagens de todas as bounding boxes
-for i, bbox in enumerate(bounding_boxes):
+'''for i, bbox in enumerate(bounding_boxes):
     xmin, ymin = bbox[0]
     xmax, ymax = bbox[1]
     cropped_image = image[ymin:ymax, xmin:xmax]
-    cv2.imwrite(f'bounding_box_ocupadas2{i}.jpg', cropped_image)
-
+    caminho = 'BB_70m_vazias'
+    if not(os.path.exists(caminho)):
+        os.makedirs(caminho)
+    filename = os.path.join(caminho,f'BB_70m_set2_1_{i}.jpg')
+    cv2.imwrite(filename, cropped_image)
+    '''
 cv2.destroyAllWindows()
