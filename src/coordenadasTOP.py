@@ -39,4 +39,7 @@ while True:
     if key == 27:  
         break
 
+with open('bounding_boxes.txt', 'a') as file:
+        file.write(f'{x_min_norm} {y_min_norm} {largura_norm} {altura_norm}\n')
+
 cv2.destroyAllWindows()
