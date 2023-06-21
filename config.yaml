@@ -1,6 +1,6 @@
 path: D:/estacionamento_inteligente/data
 train: images/train
-val: images/val
+val: val
 
 names:
  0: car
