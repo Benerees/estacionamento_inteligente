@@ -1,7 +1,0 @@
-images/train\frame_extraido.jpg
-images/train\frame_extraido1.jpg
-images/train\frame_extraido3.jpg
-images/train\frame_extraido4.jpg
-images/train\frame_extraido5.jpg
-images/train\frame_extraido6.jpg
-images/train\frame_extraido7.jpg
