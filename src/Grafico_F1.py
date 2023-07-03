@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 alturas = [30, 40, 50 , 60, 70]  # Exemplo de lista de alturas
-f1 = [0.9999, 0.9996, 0.9990, 0.9990, 0.9998]  # Exemplo de lista de F1-scores correspondentes
+f1 = [0.96, 0.98, 0.99, 0.97, 0.98]  # Exemplo de lista de F1-scores correspondentes
 
 
 plt.plot(alturas, f1, marker='o', linestyle='-', color='blue')  # Cria o gráfico

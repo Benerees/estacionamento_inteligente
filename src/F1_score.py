@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 
-dataset = pd.read_csv('D:/estacionamento_inteligente/runs/detect/train_set2_30m_2/results.csv')
+dataset = pd.read_csv('D:/estacionamento_inteligente/runs/detect/train_frame_extraido7/results.csv')
 
 precision = dataset['   metrics/precision(B)']
 recall = dataset['      metrics/recall(B)']
@@ -25,5 +25,5 @@ print('epoca ',epoca )
 
 
 
-
-# 0.9990440871031836 + 0.9999449969748336
+ 
+#60m 0,997684    0,999094      0.999880     0.999689    0.996764   0.999774   0.999974    0.99927    0.999984
