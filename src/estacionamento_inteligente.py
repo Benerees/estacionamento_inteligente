@@ -16,10 +16,8 @@ def read_bounding_boxes_from_txt(file_path):
 
     return bounding_boxes
 
-
-# Exemplo de uso:
-cars_file = 'D:/Projetos/estacionamento_inteligente/data/labels/train/frame_extraido.txt'
-parking_spots_file = 'D:/Projetos/estacionamento_inteligente/coordenadas_testesC_BB/frame_extraido.txt'
+cars_file = 'D:/Projetos/estacionamento_inteligente/data/images/imagens_30m/foto_30.txt'
+parking_spots_file = 'D:/Projetos/estacionamento_inteligente/data/map_estacionamento/foto_30.txt'
 
 cars = read_bounding_boxes_from_txt(cars_file)
 parking_spots = read_bounding_boxes_from_txt(parking_spots_file)
@@ -28,9 +26,9 @@ parking_spots = read_bounding_boxes_from_txt(parking_spots_file)
 # for car in cars:
 #     print(car)
 
-print("Parking Spots:")
-for spot in parking_spots:
-    print(spot)
+# print("Parking Spots:")
+# for spot in parking_spots:
+#     print(spot)
 
 def calculate_overlap(box1, box2):
     x1 = max(box1[0], box2[0])
@@ -44,9 +42,8 @@ def calculate_overlap(box1, box2):
 
     return overlap_percentage
 
-image_path = 'D:/Projetos/estacionamento_inteligente/data/images/train/frame_extraido.jpg'
+image_path = 'D:/Projetos/estacionamento_inteligente/data/images/imagens_30m/foto_30.jpg'
 frame = cv2.imread(image_path)
-class_name_dict = {0: 'vaga ocupada'}
 
 height, width, canais = frame.shape
 
@@ -54,23 +51,32 @@ height, width, canais = frame.shape
 
 def count_parking_status(parking_spots, cars):
     occupied_count = 0
-    vacant_count = 0
+    vacant_count = len(parking_spots)
     carros_transito = len(cars);
-    carros_mal = 0;
+    ocupacao_irregular = 0;
 
+    cars_list = []
     for spot in parking_spots:
         spot_occupied = False
+        mal_estacionado = False
 
         for car in cars:
             overlap_percentage = calculate_overlap(spot, car)
 
-            if overlap_percentage >= 0.7:
+            if overlap_percentage >= 0.6:
                 carros_transito -= 1
                 spot_occupied = True
                 break
-            if overlap_percentage >= 0.5:
-                carros_transito -=1
-                carros_mal +=1
+            elif overlap_percentage >= 0.3:
+                if car in cars_list:
+                    print("já está na lista")
+                else:
+                    cars_list.append(car)
+                    carros_transito -= 1
+                    ocupacao_irregular +=1
+
+                mal_estacionado = True
+                break
         
         x, y, width_y, height_y = spot
        
@@ -86,36 +92,38 @@ def count_parking_status(parking_spots, cars):
 
         if spot_occupied:
             occupied_count += 1
-
+            vacant_count -= 1
             cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 0, 255), 1)
-            cv2.putText(frame, class_name_dict[0].upper(), (int(x1), int(y1 - 10)),
+            cv2.putText(frame, "Vaga ocupada".upper(), (int(x1), int(y1 - 10)),
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
             cv2.imwrite('D:/Projetos/estacionamento_inteligente/teste/result.JPEG', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+        elif mal_estacionado:
+            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 255), 1)
+            cv2.putText(frame, "Mal estacionado".upper(), (int(x1), int(y1 - 10)),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 1, cv2.LINE_AA)
+            cv2.imwrite('D:/Projetos/estacionamento_inteligente/teste/result.JPEG', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+            occupied_count += 1
+            vacant_count -= 1
         else:
-            vacant_count += 1
-
             cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 1)
-            cv2.putText(frame, class_name_dict[0].upper(), (int(x1), int(y1 - 10)),
+            cv2.putText(frame, "Vaga vazia".upper(), (int(x1), int(y1 - 10)),
             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
             cv2.imwrite('D:/Projetos/estacionamento_inteligente/teste/result.JPEG', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
 
-    return occupied_count, vacant_count, carros_transito, carros_mal
+    return occupied_count, vacant_count, carros_transito, ocupacao_irregular
 
-
-# Exemplo de uso:
-
-occupied, vacant, carros_transito, carros_mal = count_parking_status(parking_spots, cars)
+occupied, vacant, carros_transito, ocupacao_irregular = count_parking_status(parking_spots, cars)
 
 
 cv2.putText(frame, f'Vagas ocupadas: {occupied}', (int(20), int(30)),
-cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 1, cv2.LINE_AA)
+cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 1, cv2.LINE_AA)
 cv2.putText(frame, f'Vagas vazias: {vacant}', (int(20), int(60)),
-cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 1, cv2.LINE_AA)
+cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 1, cv2.LINE_AA)
 cv2.imwrite('D:/Projetos/estacionamento_inteligente/teste/result.JPEG', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
 cv2.putText(frame, f'Carros em transito: {carros_transito}', (int(20), int(90)),
-cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 1, cv2.LINE_AA)
+cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 1, cv2.LINE_AA)
 cv2.imwrite('D:/Projetos/estacionamento_inteligente/teste/result.JPEG', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
-cv2.putText(frame, f'Carros mal estacionados: {carros_mal}', (int(20), int(120)),
-cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 1, cv2.LINE_AA)
+cv2.putText(frame, f'Carros mal estacionados: {ocupacao_irregular}', (int(20), int(120)),
+cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 0), 1, cv2.LINE_AA)
 cv2.imwrite('D:/Projetos/estacionamento_inteligente/teste/result.JPEG', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
 
