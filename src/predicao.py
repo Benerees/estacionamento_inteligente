@@ -1,8 +1,8 @@
 # Valores fornecidos
-VP = 62
+VP = 10
 VN = 0
-FN = 3
-FP = 0
+FN = 0
+FP = 
 
 precisao = VP / (VP + FP)
 

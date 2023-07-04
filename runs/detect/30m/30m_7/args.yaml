@@ -3,7 +3,7 @@ mode: train
 model: yolov8n.pt
 data: config.yaml
 epochs: 100
-patience: 20
+patience: 40
 batch: 16
 imgsz: 640
 save: true
@@ -94,4 +94,4 @@ copy_paste: 0.0
 cfg: null
 v5loader: false
 tracker: botsort.yaml
-save_dir: runs\detect\train2
+save_dir: runs\detect\train
