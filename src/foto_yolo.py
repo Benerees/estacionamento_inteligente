@@ -2,10 +2,10 @@ import os
 import cv2
 from ultralytics import YOLO
 
-image_path = 'C:/Users/dani/Downloads/imagemTeste.jpg'
+image_path = 'C:/Users/dani/Documents/istockphoto-856857870-612x612.jpg'
 output_path = 'D:/estacionamento_inteligente/data/foto.JPG'
 
-model = YOLO("D:/estacionamento_inteligente/runs/detect/train_set2_70m_1/weights/best.pt")  # load a custom model
+model = YOLO("D:/estacionamento_inteligente/runs/detect/30m/30m_1/weights/best.pt")  # load a custom model
 
 threshold = 0.3
 
