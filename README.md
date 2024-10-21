@@ -10,3 +10,6 @@ https://youtu.be/-a7V8XYZxN4
   Site usado para fazer as bounding boxes dos carros e mapear o estacionamento
 - https://youtu.be/F-884J2mnOY
   Vídeo utilizado como inspiração, porém é feito de uma forma totalmente diferente
+
+##Coautoria
+Daniel Ferreira Martins
